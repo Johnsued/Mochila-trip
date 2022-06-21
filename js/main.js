@@ -1,11 +1,20 @@
 const form = document.getElementById("novoItem");
 const lista = document.getElementById("lista");
+const itens = [];
 
 
 form.addEventListener("submit", (evento) => {
     evento.preventDefault();
 
-    criaElemento(evento.target.elements["nome"].value, evento.target.elements["quantidade"].value);//função chamando os eventos "nome ,quantidade"
+    //Crie variáveis para acessar os valores enviados:
+    const nome = evento.target.elements["nome"]
+    const quantidade = evento.target.elements["quantidade"]
+    
+    criaElemento(nome.value, quantidade.value);//função chamando os eventos "nome ,quantidade"
+    
+    //Refatoração do código para que após o envio de itens, o formulário fique vazio:
+    nome.value = ""
+    quantidade.value = ""
 });
 //função cria elemento
 function criaElemento(nome, quantidade) {
@@ -21,4 +30,15 @@ function criaElemento(nome, quantidade) {
     novoItem.appendChild(numeroItem)//mandando item camisa branca para html
     novoItem.innerHTML += nome //recebendo item da camisa branca no html
     lista.appendChild(novoItem);
+
+    /*Transforme a variável já criada, itemAtual, em um objeto object que receba os valores de nome e quantidade,
+     e transforme os valores estes valores em string:*/
+    const itemAtual = {
+        "nome": nome, 
+        "quantidade": quantidade
+    }
+
+    itens.push(itemAtual)//Insira a variável itemAtual nesse array itens, utilizando o método push:
+
+    localStorage.setItem("item", JSON.stringify(itens));//transformando objeto para uma string no localStorage
 }
